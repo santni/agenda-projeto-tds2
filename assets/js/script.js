@@ -60,7 +60,7 @@ class Pessoa {
         this.cidade = cidade;
         this.instagram = instagram;
         this.github = github;
-        this.aniversario = this.calculateAge(data);
+        this.age = this.calculateAge(data);
         this.zodiacSign = this.getZodiacSign();
     }
 
@@ -73,9 +73,9 @@ class Pessoa {
         if (month < 0 || (month === 0 && today.getDate() < data.getDate())) {
             age--;
         }
-        console.log("Passou pelo calculateAge() da class User");
+        console.log("Passou pelo calculateAge() da class Pessoa");
         return age;
-        
+
     }
     getZodiacSign() {
         let data = new Date(this.data);
@@ -109,6 +109,10 @@ class Pessoa {
             return "Sagitário ♐";
         }
     }
+
+    randomId() {
+        return Math.floor(Math.random() * 9998) + 1;
+    }
 }
 
 const PessoaTeste = new Pessoa("Nicolly Santos", "(19)76648-5636", "(12)78867-4563", "pnglink", "19/12/2006", "nicolly@gmail.com", "13987-134", "Valinhos", "@santnii", "@santni");
@@ -130,7 +134,6 @@ function registrarPessoa() {
     const nomePessoa = new Pessoa(nomeCompleto, telFixo, telCelular, imgLink, data, email, cep, cidade, instagram, github);
 
     bibliotecaPessoas.addPessoa(nomePessoa);
-    renderizarConteudo();
 }
 
 class ListaPessoas {
@@ -142,22 +145,110 @@ class ListaPessoas {
         if (verificarInputs()) {
             envieMsg('Preencha todos os campos, por favor!', 'erro');
         } else if (!isURLValida(param.imgLink)) {
-            envieMsg("URL inválido!", 'erro')
-        }
-        else {
+            envieMsg('URL inválido!', 'erro')
+        } else if (validaNumero()) {
+            envieMsg('Número inválido!')
+        } else if (validaCEP()) {
+            envieMsg('CEP inválido!')
+        } else {
             this.listaPessoas.push(param);
             limparInputs();
-            console.log('Cadastrado com sucesso!');
+            envieMsg('Cadastrado com sucesso!', 'sucesso');
         }
+    }
+    rizarConteudo() {
+        registrarPessoa();
+        const listaHTML = document.getElementById('containerLista');
+        listaHTML.innerHTML = '';
+        let array = bibliotecaPessoas.listaPessoas;
+        console.log(array);
+        let content = "";
+
+        array.forEach(nomePessoa => {
+            content += `
+        <div class='containerLista'>
+        <div class='foto-infos'>
+                    <img id="imgPessoa" src="${nomePessoa.imgLink}" alt="${nomePessoa.nomeCompleto}">
+                    <h1>${nomePessoa.nomeCompleto}</h2>
+                    <p>Tel Fixo: ${nomePessoa.telFixo}</p>
+                    <p>Tel Celular: ${nomePessoa.telCelular}</p>
+                    <p>Data de nascimento: ${nomePessoa.data}</p>
+                    <p>E-mail: ${nomePessoa.email}</p>
+                    <p>Idade: ${nomePessoa.age}</p>
+                    <p>Signo: ${nomePessoa.zodiacSign}</p>
+                    <p>CEP: ${nomePessoa.cep}</p>
+                    <p>Cidade: ${nomePessoa.cidade}</p>
+                    <p>Instagram: ${nomePessoa.instagram}</p>
+                    <p>Github: ${nomePessoa.github}</p>
+            </div>
+                `
+        });
+        document.getElementById('containerLista').innerHTML = content;
     }
 }
 
+const bibliotecaPessoas = new ListaPessoas();
+
+function formatedCellphone(telFixo) {
+
+    let cellphoneArray = telFixo.split("");
+    let cellphoneFormated = "(" + cellphoneArray[0] + cellphoneArray[1] + ")"
+        + " " + cellphoneArray[2] + cellphoneArray[3] + cellphoneArray[4]
+        + cellphoneArray[5] + cellphoneArray[6] + "-"
+        + cellphoneArray[7] + cellphoneArray[8]
+        + cellphoneArray[9] + cellphoneArray[10];
+    return cellphoneFormated;
+}
+
+
 function isURLValida(url) {
-    if(url.match(/\.(jpeg|jpg|gif|png)$/) != null){
+    if (url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
         return true;
     } else {
         return false;
     }
+}
+
+function dateinPTBR(data) {
+
+    let dateArray = data.split("-");
+    let datePTBR = dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0];
+    return datePTBR;
+}
+
+function validaNumero() {
+    let telFixo = document.getElementById("input-telFixo").value;
+    let telCelular = document.getElementById("input-telCelular").value;
+    let telFixoCaracteres = telFixo.length;
+    let telCelularCaracteres = telCelular.length;
+
+    if (telCelularCaracteres != 11 || telFixoCaracteres != 11) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validaCEP() {
+    let cep = document.getElementById("input-cep").value;
+    let cepCaracteres = cep.length;
+
+    if (cepCaracteres != 8) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function formatedCEP(cep) {
+
+    let cepArray = cep.split("");
+    let cepFormated = cellphoneArray[0] + cellphoneArray[1] +
+        + cellphoneArray[2] + cellphoneArray[3] + cellphoneArray[4] + "-"
+        + cellphoneArray[5] + cellphoneArray[6]
+        + cellphoneArray[7] + cellphoneArray[8]
+        + cellphoneArray[9] + cellphoneArray[10];
+    return cepFormated;
 }
 
 function limparInputs() {
@@ -172,46 +263,6 @@ function limparInputs() {
     document.getElementById("input-instagram").value = "";
     document.getElementById("input-github").value = "";
 }
-
-const bibliotecaPessoas = new ListaPessoas();
-
-function renderizarConteudo() {
-    const listaHTML = document.getElementById('containerLista');
-    listaHTML.innerHTML = '';
-    let array = bibliotecaPessoas.listaPessoas;
-    console.log(array);
-
-    array.forEach(nomePessoa => {
-        content += `
-    <div class='containerLista'>
-                <img src="${nomePessoa.imgLink}" alt="${nomePessoa.nomeCompleto}">
-                <h1>${nomePessoa.nomeCompleto}</h2>
-                <p>Telefone Fixo: ${nomePessoa.telFixo}</p>
-                <p>Telefone Celular: ${nomePessoa.telCelular}</p>
-            </div>
-            `
-    });
-    document.getElementById('containerLista').innerHTML = content;
-}
-
-function renderizarConteudo() {
-    let content = '';
-    let array = bibliotecaPessoas.listaPessoas;
-
-    array.forEach(nomePessoa => {
-        content += `
-    <div class='containerLista'>
-                <img src="${nomePessoa.imgLink}">
-                <h1>${nomePessoa.nomeCompleto}</h2>
-                <p>Telefone Fixo: ${nomePessoa.telFixo}</p>
-                <p>Telefone Celular: ${nomePessoa.telCelular}</p>
-            </div>
-            `
-    });
-    document.getElementById('containerLista').innerHTML = content;
-}
-
-
 
 
 

@@ -18,6 +18,13 @@ body {
     font-size: small;
 }
 
+.sucesso {
+    color: rgb(42, 196, 0);
+    text-align: center;
+    margin-top: 15px;
+    font-size: small;
+}
+
 #botao-add {
     border: none;
     background-color: blue;
@@ -48,3 +55,20 @@ input {
     border-radius: 5px;
 }
 
+#containerLista {
+    text-align: center;
+    margin-left: 450px;
+    justify-content: center;
+    padding: 20px;
+    /*border-radius: 8px;
+    background-color:white;*/
+    width: 30%;
+    margin-top: 2rem;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+#imgPessoa {
+    border-radius: 100px;
+    width: 100px;
+}
