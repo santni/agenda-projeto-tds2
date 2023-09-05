@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="assets/js/script.js"></script>
+    <link href="assets/css/style.css" rel="stylesheet">
+    <title>Agenda Telefônica</title>
+</head>
+
+<body>
+    <div class="input-container">
+        <h1>Agenda Telefônica</h1>
+        <div id="input-infos">
+            <Input type="text" id="input-nomeCompleto" name="input-nomeCompleto" class="input" placeholder="Nome Completo">
+            <Input type="text" id="input-telFixo" name="input-telFixo" class="input" placeholder="Telefone Fixo" maxlength="11">
+            <Input type="text" id="input-telCelular" name="input-telCelular" class="input" placeholder="Telefone Celular" maxlength="11">
+            <Input type="text" id="input-imgLink" name="input-imgLink" class="input" placeholder="URL da Foto">
+            <Input type="date" id="input-data" name="input-data" class="input">
+            <Input type="email" id="input-email" name="input-email" class="input" placeholder="E-mail">
+            <Input type="text" id="input-cep" name="input-cep" class="input" placeholder="CEP" maxlength="8">
+            <Input type="text" id="input-cidade" name="input-cidade" class="input" placeholder="Cidade">
+            <Input type="text" id="input-instagram" name="input-instagram" class="input" placeholder="@Instagram">
+            <Input type="text" id="input-github" name="input-github" class="input" placeholder="@Github">
+
+                <button id="botao-add" onclick="registrarPessoa()">Adicionar Contato</button>
+        </div>
+    </div>
+
+    <div id="msg"></div>
+
+    <div id="div-vazia" class="hidden">
+        <div id="containerAgenda">
+
+        </div>
+    </div>
+</body>
+</html>
